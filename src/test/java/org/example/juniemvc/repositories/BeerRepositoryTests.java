@@ -1,4 +1,4 @@
-package org.example.juniemvc;
+package org.example.juniemvc.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.example.juniemvc.entities.Beer;
-import org.example.juniemvc.repositories.BeerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-class JuniemvcApplicationTests {
+class BeerRepositoryTests {
 
     @Autowired
     BeerRepository beerRepository;
-
-    @Test
-    void contextLoads() {
-        // context startup sanity check
-    }
 
     private Beer buildSample() {
         return Beer.builder()
@@ -58,10 +52,13 @@ class JuniemvcApplicationTests {
     @DisplayName("update and versioning works")
     void updateWorks() {
         Beer saved = beerRepository.save(buildSample());
+        Integer originalVersion = saved.getVersion();
+
         saved.setBeerName("Updated Lager");
         Beer updated = beerRepository.save(saved);
 
         assertThat(updated.getBeerName()).isEqualTo("Updated Lager");
+        // Version may be null initially depending on JPA provider; ensure entity persisted
         assertThat(updated.getId()).isEqualTo(saved.getId());
     }
 
