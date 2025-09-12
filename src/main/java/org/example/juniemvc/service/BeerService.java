@@ -2,17 +2,17 @@ package org.example.juniemvc.service;
 
 import java.util.List;
 import java.util.Optional;
-import org.example.juniemvc.entities.Beer;
+import org.example.juniemvc.models.BeerDTO;
 
 public interface BeerService {
 
-    List<Beer> findAll();
+    List<BeerDTO> findAll();
 
-    Optional<Beer> findById(Integer id);
+    Optional<BeerDTO> findById(Integer id);
 
-    Beer create(Beer beer);
+    BeerDTO create(BeerDTO beer);
 
-    Optional<Beer> update(Integer id, Beer beer);
+    Optional<BeerDTO> update(Integer id, BeerDTO beer);
 
     boolean deleteById(Integer id);
 }

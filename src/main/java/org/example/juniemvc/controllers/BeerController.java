@@ -2,7 +2,7 @@ package org.example.juniemvc.controllers;
 
 import java.net.URI;
 import java.util.List;
-import org.example.juniemvc.entities.Beer;
+import org.example.juniemvc.models.BeerDTO;
 import org.example.juniemvc.service.BeerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,24 +27,24 @@ public class BeerController {
     }
 
     @GetMapping
-    public List<Beer> listAll() {
+    public List<BeerDTO> listAll() {
         return beerService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Beer getById(@PathVariable Integer id) {
+    public BeerDTO getById(@PathVariable Integer id) {
         return beerService.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Beer not found"));
     }
 
     @PostMapping
-    public ResponseEntity<Beer> create(@RequestBody Beer beer) {
-        Beer created = beerService.create(beer);
+    public ResponseEntity<BeerDTO> create(@RequestBody BeerDTO beer) {
+        BeerDTO created = beerService.create(beer);
         return ResponseEntity.created(URI.create("/api/beers/" + created.getId())).body(created);
     }
 
     @PutMapping("/{id}")
-    public Beer update(@PathVariable Integer id, @RequestBody Beer beer) {
+    public BeerDTO update(@PathVariable Integer id, @RequestBody BeerDTO beer) {
         return beerService.update(id, beer)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Beer not found"));
     }

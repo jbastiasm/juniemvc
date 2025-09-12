@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import org.example.juniemvc.entities.Beer;
+import org.example.juniemvc.models.BeerDTO;
 import org.example.juniemvc.service.BeerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,8 +37,8 @@ class BeerControllerTests {
     @MockBean
     BeerService beerService;
 
-    private Beer sample(Integer id) {
-        return Beer.builder()
+    private BeerDTO sample(Integer id) {
+        return BeerDTO.builder()
             .id(id)
             .beerName("Sample Lager")
             .beerStyle("Lager")
@@ -82,9 +82,9 @@ class BeerControllerTests {
     @Test
     @DisplayName("POST /api/beers creates and returns 201 with Location")
     void create_returns201WithLocationAndBody() throws Exception {
-        Beer toCreate = sample(null);
-        Beer created = sample(10);
-        given(beerService.create(any(Beer.class))).willReturn(created);
+        BeerDTO toCreate = sample(null);
+        BeerDTO created = sample(10);
+        given(beerService.create(any(BeerDTO.class))).willReturn(created);
 
         String json = objectMapper.writeValueAsString(toCreate);
 
@@ -100,9 +100,9 @@ class BeerControllerTests {
     @Test
     @DisplayName("PUT /api/beers/{id} updates and returns 200")
     void update_returns200AndBody() throws Exception {
-        Beer update = sample(null);
-        Beer updated = sample(2);
-        given(beerService.update(eq(2), any(Beer.class))).willReturn(Optional.of(updated));
+        BeerDTO update = sample(null);
+        BeerDTO updated = sample(2);
+        given(beerService.update(eq(2), any(BeerDTO.class))).willReturn(Optional.of(updated));
         String json = objectMapper.writeValueAsString(update);
 
         mockMvc.perform(put("/api/beers/2")
@@ -116,8 +116,8 @@ class BeerControllerTests {
     @Test
     @DisplayName("PUT /api/beers/{id} returns 404 when not found")
     void update_notFound_returns404() throws Exception {
-        Beer update = sample(null);
-        given(beerService.update(eq(99), any(Beer.class))).willReturn(Optional.empty());
+        BeerDTO update = sample(null);
+        given(beerService.update(eq(99), any(BeerDTO.class))).willReturn(Optional.empty());
         String json = objectMapper.writeValueAsString(update);
 
         mockMvc.perform(put("/api/beers/99")
